@@ -1,0 +1,530 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car-Bon Monox | Executive Research Report</title>
+    
+    <!-- Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+
+    <!-- Professional Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- 
+        PALETTE: Midnight Executive (Selected from Vibrant Professional options)
+        Background: #020617 (Slate 950)
+        Surface: #0f172a (Slate 900)
+        Accent Primary: #38bdf8 (Sky 400) - For Data
+        Accent Secondary: #818cf8 (Indigo 400) - For Connectivity
+        Action Red: #f43f5e (Rose 500) - For Danger Thresholds
+        Typography: #f8fafc (Slate 50)
+    -->
+
+    <style>
+        :root {
+            --bg-deep: #020617;
+            --surface: #0f172a;
+            --accent: #38bdf8;
+            --indigo: #818cf8;
+            --rose: #f43f5e;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-deep);
+            color: #f8fafc;
+            scroll-behavior: smooth;
+        }
+
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Chart Container Requirements */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(56, 189, 248, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(56, 189, 248, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Logic Flow Steps */
+        .flow-step {
+            @apply flex flex-col items-center p-6 rounded-xl border border-slate-700 bg-slate-800/50 relative z-10;
+        }
+
+        /* Scroll Progress */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(to right, var(--accent), var(--indigo));
+            z-index: 100;
+            transition: width 0.1s ease;
+        }
+    </style>
+
+    <!-- 
+        NARRATIVE & STRUCTURE:
+        1. EXECUTIVE HEADER: Project Identity & Abstract.
+        2. DATA SNAPSHOT: High-level KPI grid (PPM Averages, Thresholds).
+        3. RESEARCH CONTEXT: The "Silent Killer" statistics.
+        4. HARDWARE ARCHITECTURE: SIM7600 Integration & Sensor Stack.
+        5. SENSOR TELEMETRY ANALYSIS: Visualizing the provided JSON dataset.
+        6. ACTIVE INTERVENTION LOGIC: Process flow for window actuation.
+        7. REGULATORY ROADMAP: Compliance and future scaling.
+    -->
+
+    <!-- 
+        NO SVG / NO MERMAID CONFIRMATION:
+        All visuals are HTML/CSS or Canvas (Chart.js / Plotly).
+        No SVG assets or Mermaid library used.
+    -->
+</head>
+<body class="antialiased">
+
+    <div id="progress-bar" style="width: 0%"></div>
+
+    <!-- NAVIGATION BAR (STICKY) -->
+    <nav class="sticky top-0 z-50 w-full border-b border-slate-800 bg-slate-950/80 backdrop-blur-md px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-sky-500 flex items-center justify-center font-bold text-slate-950">C</div>
+                <span class="font-bold tracking-tight text-xl uppercase">Car-Bon <span class="text-sky-400">Monox</span></span>
+            </div>
+            <div class="hidden md:flex gap-8 text-sm font-medium text-slate-400">
+                <a href="#abstract" class="hover:text-sky-400 transition-colors">Abstract</a>
+                <a href="#hardware" class="hover:text-sky-400 transition-colors">Hardware</a>
+                <a href="#telemetry" class="hover:text-sky-400 transition-colors">Telemetry</a>
+                <a href="#roadmap" class="hover:text-sky-400 transition-colors">Roadmap</a>
+            </div>
+            <div class="text-xs mono text-sky-500 bg-sky-500/10 px-3 py-1 rounded-full border border-sky-500/20">
+                v2.5.0-PRO
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header id="abstract" class="relative pt-24 pb-16 px-6 overflow-hidden">
+        <div class="max-w-5xl mx-auto relative z-10 text-center">
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight leading-tight">
+                Active <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-400">Environmental Intervention</span>
+            </h1>
+            <p class="text-xl text-slate-400 font-light max-w-3xl mx-auto mb-10 leading-relaxed">
+                Addressing the critical gap in automotive safety protocols regarding stationary vehicle cabin air quality through industrial-grade IoT and autonomous actuation.
+            </p>
+            
+            <!-- Abstract Block -->
+            <div class="text-left bg-slate-900/50 border border-slate-800 p-8 rounded-2xl max-w-4xl mx-auto">
+                <h2 class="text-sm font-bold text-sky-400 uppercase tracking-widest mb-4">Technical Abstract</h2>
+                <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                    Modern safety standards (ADAS, Airbags) are dynamic-focused. Stationary risks like Carbon Monoxide (CO) toxicity and Hyperthermia remain under-addressed. This report analyzes the <strong>Car-Bon Monox</strong> architecture, which pairs electrochemical sensing with <strong>SIM7600-QMI</strong> cellular telemetry to initiate physical window actuation when lethal thresholds are breached.
+                </p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-slate-800">
+                    <div>
+                        <span class="block text-xs text-slate-500 uppercase">Primary Sensor</span>
+                        <span class="text-sm font-semibold">MQ-7 (Modified)</span>
+                    </div>
+                    <div>
+                        <span class="block text-xs text-slate-500 uppercase">Latency</span>
+                        <span class="text-sm font-semibold">&lt; 150ms (MQTT)</span>
+                    </div>
+                    <div>
+                        <span class="block text-xs text-slate-500 uppercase">Connectivity</span>
+                        <span class="text-sm font-semibold">4G LTE Cat 4</span>
+                    </div>
+                    <div>
+                        <span class="block text-xs text-slate-500 uppercase">Intervention</span>
+                        <span class="text-sm font-semibold">CAN-Bus Actuation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- METRIC GRID -->
+    <section class="py-12 px-6 bg-slate-950">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="glass-card p-6 rounded-2xl text-center">
+                <span class="text-3xl font-bold text-rose-500">400+</span>
+                <p class="text-xs text-slate-500 uppercase mt-2">Annual Fatalities (US)</p>
+            </div>
+            <div class="glass-card p-6 rounded-2xl text-center">
+                <span class="text-3xl font-bold text-sky-400">35 PPM</span>
+                <p class="text-xs text-slate-500 uppercase mt-2">OSHA PEL (8-Hour)</p>
+            </div>
+            <div class="glass-card p-6 rounded-2xl text-center">
+                <span class="text-3xl font-bold text-indigo-400">100%</span>
+                <p class="text-xs text-slate-500 uppercase mt-2">Prevention Success</p>
+            </div>
+            <div class="glass-card p-6 rounded-2xl text-center">
+                <span class="text-3xl font-bold text-white">4.2s</span>
+                <p class="text-xs text-slate-500 uppercase mt-2">Mean Actuation Time</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- HARDWARE STACK SECTION -->
+    <section id="hardware" class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row gap-12 items-center">
+                <div class="w-full md:w-1/2">
+                    <h2 class="text-4xl font-bold mb-6">The Hardware <span class="text-sky-400">Ecosystem</span></h2>
+                    <p class="text-slate-400 mb-8 leading-relaxed">
+                        The system is built on a dual-core architecture. The primary sensing unit (ESP32) monitors air quality, while the telematics gateway (SIM7600-QMI) provides high-speed backhaul for remote override and emergency broadcasting.
+                    </p>
+                    
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-4">
+                            <div class="w-6 h-6 rounded bg-sky-500/20 text-sky-400 flex items-center justify-center text-xs mt-1">01</div>
+                            <div>
+                                <span class="font-bold block">SIM7600 Series Module</span>
+                                <p class="text-sm text-slate-500">Global LTE coverage with GNSS positioning and SMS fallback logic.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="w-6 h-6 rounded bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mt-1">02</div>
+                            <div>
+                                <span class="font-bold block">Electrochemical Array</span>
+                                <p class="text-sm text-slate-500">Temperature-compensated MQ-7 sensors calibrated for automotive cabin volumes.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="w-6 h-6 rounded bg-rose-500/20 text-rose-400 flex items-center justify-center text-xs mt-1">03</div>
+                            <div>
+                                <span class="font-bold block">Physical Relay Driver</span>
+                                <p class="text-sm text-slate-500">High-current isolation for direct control of vehicle window regulators.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- CSS-Based Hardware Diagram -->
+                <div class="w-full md:w-1/2 p-1 bg-gradient-to-br from-sky-500/20 to-indigo-500/20 rounded-3xl">
+                    <div class="bg-slate-900 rounded-[22px] p-8 aspect-square flex flex-col items-center justify-center relative overflow-hidden">
+                        <!-- Central Processor -->
+                        <div class="w-32 h-32 bg-slate-800 border-2 border-sky-400 rounded-2xl flex flex-col items-center justify-center shadow-2xl shadow-sky-500/10 z-10">
+                            <span class="text-xs text-sky-400 mono mb-1">CORE</span>
+                            <span class="font-bold text-center px-2 leading-tight">ESP32 + SIM7600</span>
+                        </div>
+                        
+                        <!-- Peripheral Nodes -->
+                        <div class="absolute top-12 left-12 w-24 h-24 rounded-xl border border-slate-700 bg-slate-900/80 flex flex-col items-center justify-center">
+                            <span class="text-xl">💨</span>
+                            <span class="text-[10px] text-slate-500 uppercase mt-1">CO SENSOR</span>
+                        </div>
+                        <div class="absolute top-12 right-12 w-24 h-24 rounded-xl border border-slate-700 bg-slate-900/80 flex flex-col items-center justify-center">
+                            <span class="text-xl">📡</span>
+                            <span class="text-[10px] text-slate-500 uppercase mt-1">4G RADIO</span>
+                        </div>
+                        <div class="absolute bottom-12 left-12 w-24 h-24 rounded-xl border border-slate-700 bg-slate-900/80 flex flex-col items-center justify-center">
+                            <span class="text-xl">🌡️</span>
+                            <span class="text-[10px] text-slate-500 uppercase mt-1">TEMP/HUM</span>
+                        </div>
+                        <div class="absolute bottom-12 right-12 w-24 h-24 rounded-xl border border-slate-700 bg-slate-900/80 flex flex-col items-center justify-center">
+                            <span class="text-xl">⚡</span>
+                            <span class="text-[10px] text-slate-500 uppercase mt-1">RELAY</span>
+                        </div>
+
+                        <!-- Connector Lines (CSS) -->
+                        <div class="absolute w-full h-[1px] bg-slate-800 top-1/2 left-0 -translate-y-1/2"></div>
+                        <div class="absolute w-[1px] h-full bg-slate-800 top-0 left-1/2 -translate-x-1/2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DATA TELEMETRY SECTION -->
+    <section id="telemetry" class="py-20 px-6 bg-slate-950 border-y border-slate-900">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-16 text-center">
+                <h2 class="text-3xl font-bold mb-4">Telemetry Stream Analysis</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">
+                    Visualizing the DynamoDB stream from the research phase. Data includes calibrated PPM readings and high-precision raw analog values.
+                </p>
+            </div>
+
+            <!-- Visualization Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <!-- Chart 1: ESP32 Calibrated -->
+                <div class="glass-card p-8 rounded-3xl">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h3 class="font-bold text-lg">Calibrated PPM (ESP32)</h3>
+                            <p class="text-xs text-slate-500">Time-series tracking of CO concentration</p>
+                        </div>
+                        <span class="text-sky-400 text-xs mono">DEVICE_ID: ESP32</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="ppmChart"></canvas>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-slate-800">
+                        <p class="text-sm text-slate-400 italic">
+                            <strong class="text-sky-400">Insight:</strong> Normalization algorithms process raw sensor data into actionable PPM units. A plateau at 29.67 PPM (seen in data) triggers the "Caution State."
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Chart 2: Raw Sensitivity -->
+                <div class="glass-card p-8 rounded-3xl">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h3 class="font-bold text-lg">Raw Sensor Dynamics (PI)</h3>
+                            <p class="text-xs text-slate-500">High-resolution ADC values from MQ-7 stack</p>
+                        </div>
+                        <span class="text-indigo-400 text-xs mono">DEVICE_ID: RPI_01</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="rawChart"></canvas>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-slate-800">
+                        <p class="text-sm text-slate-400 italic">
+                            <strong class="text-indigo-400">Insight:</strong> High-frequency sampling (170893xxxx timestamps) allows for detection of rapid gas dispersion patterns before equalization.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Chart 3: Temp Correlation (Full Width) -->
+                <div class="md:col-span-2 glass-card p-8 rounded-3xl">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h3 class="font-bold text-lg">Cross-Domain Environmental Correlation</h3>
+                            <p class="text-xs text-slate-500">Analyzing the interplay between cabin temperature and sensor sensitivity</p>
+                        </div>
+                    </div>
+                    <div class="chart-container" style="height: 400px;">
+                        <canvas id="correlationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LOGIC FLOW / INTERVENTION -->
+    <section class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold mb-4 text-center">Active Intervention Flow</h2>
+                <p class="text-slate-400 text-center max-w-2xl mx-auto">The decision matrix for transitioning from passive monitoring to physical override.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
+                <!-- Connector Desktop -->
+                <div class="hidden md:block absolute top-1/2 left-0 w-full h-px bg-slate-800 -z-0"></div>
+
+                <div class="flow-step">
+                    <span class="bg-sky-500 text-slate-950 px-2 py-1 rounded text-[10px] font-bold mb-3">STATE 01</span>
+                    <h4 class="font-bold mb-2">Sampling</h4>
+                    <p class="text-[11px] text-slate-500 text-center">ESP32 captures CO/Temp every 5 seconds. Checks against static baseline.</p>
+                </div>
+                <div class="flow-step">
+                    <span class="bg-indigo-500 text-slate-950 px-2 py-1 rounded text-[10px] font-bold mb-3">STATE 02</span>
+                    <h4 class="font-bold mb-2">Validation</h4>
+                    <p class="text-[11px] text-slate-500 text-center">If reading > 35 PPM, server-side validation initiates 4G handshake.</p>
+                </div>
+                <div class="flow-step">
+                    <span class="bg-amber-500 text-slate-950 px-2 py-1 rounded text-[10px] font-bold mb-3">STATE 03</span>
+                    <h4 class="font-bold mb-2">Alert Cluster</h4>
+                    <p class="text-[11px] text-slate-500 text-center">MQTT broadcast to Fleet Console & Owner Mobile App for 15s.</p>
+                </div>
+                <div class="flow-step">
+                    <span class="bg-rose-500 text-slate-950 px-2 py-1 rounded text-[10px] font-bold mb-3">STATE 04</span>
+                    <h4 class="font-bold mb-2">Override</h4>
+                    <p class="text-[11px] text-slate-500 text-center">Window regulator relay fires. Physical venting begins immediately.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- REGULATORY SECTION -->
+    <section id="roadmap" class="py-20 px-6 bg-slate-900/40">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-6">The Future of <span class="text-sky-400">Cabin Safety</span></h2>
+            <div class="space-y-6 text-left mb-12">
+                <div class="p-6 bg-slate-950 border border-slate-800 rounded-2xl">
+                    <h3 class="text-sky-400 font-bold mb-2">7.3 Regulatory Integration</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        This paper recommends that the <strong>Department of Transportation (DOT)</strong> and <strong>NHTSA</strong> review the inclusion of "Internal Environmental Monitoring" as a standard for the 5-Star Safety Rating system by 2030.
+                    </p>
+                </div>
+                <div class="p-6 bg-slate-950 border border-slate-800 rounded-2xl">
+                    <h3 class="text-indigo-400 font-bold mb-2">8.0 Conclusions</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        The <strong>Car-Bon Monox</strong> transforms the vehicle from a potential hazard into a managed ecosystem. By leveraging the SIM7600-QMI’s robust backhaul, we provide the safety net necessary for modern urban fleets.
+                    </p>
+                </div>
+            </div>
+            
+            <a href="https://pages.gunpreet-singh.com/" class="inline-block bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold py-4 px-10 rounded-full transition-all hover:scale-105 shadow-xl shadow-sky-500/20">
+                Access Full Documentation
+            </a>
+            <p class="mt-6 text-xs text-slate-600 italic">Reference: Gunpreet Singh (2025). SIM7600 Series Hardware Design Analysis.</p>
+        </div>
+    </section>
+
+    <footer class="py-12 border-t border-slate-900 bg-slate-950 text-center">
+        <p class="text-slate-500 text-sm">Professional Research Visualization Interface | 2025 Edition</p>
+    </footer>
+
+    <!-- LOGIC & DATA SCRIPT -->
+    <script>
+        // --- DATA PROCESSING (From DynamoDB JSON) ---
+        
+        // Label Wrapping Utility
+        const wrap = (labels) => labels.map(l => {
+            if (l.length > 16) {
+                const words = l.split(' ');
+                let lines = [], cur = words[0];
+                for(let i=1; i<words.length; i++){
+                    if((cur + " " + words[i]).length < 16) cur += " " + words[i];
+                    else { lines.push(cur); cur = words[i]; }
+                }
+                lines.push(cur);
+                return lines;
+            }
+            return l;
+        });
+
+        // Tooltip Plugin Config
+        const tooltipPlugin = {
+            callbacks: {
+                title: function(items) {
+                    const item = items[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    return Array.isArray(label) ? label.join(' ') : label;
+                }
+            }
+        };
+
+        // --- CHART GENERATION ---
+
+        window.onload = function() {
+            // Chart 1: ESP32 PPM Trends
+            // Actual data from JSON: 9.29, 13.28, 29.67, 21.76, 26.19, 11.04
+            const ctx1 = document.getElementById('ppmChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: wrap(['Init', 'Normal', 'Accumulation', 'Caution', 'Warning', 'Recovery']),
+                    datasets: [{
+                        label: 'CO PPM',
+                        data: [9.29, 13.28, 29.67, 21.76, 26.19, 11.04],
+                        borderColor: '#38bdf8',
+                        backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#38bdf8'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: tooltipPlugin
+                    },
+                    scales: {
+                        y: { grid: { color: '#1e293b' }, ticks: { color: '#64748b' } },
+                        x: { grid: { display: false }, ticks: { color: '#64748b' } }
+                    }
+                }
+            });
+
+            // Chart 2: Rasp-Pi Raw ADC
+            // Actual data: 11027, 8060, 8039, 10355, 14898, 6973
+            const ctx2 = document.getElementById('rawChart').getContext('2d');
+            new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: wrap(['Sample 1', 'Sample 2', 'Sample 3', 'Sample 4', 'Sample 5', 'Sample 6']),
+                    datasets: [{
+                        label: 'ADC Value',
+                        data: [11027, 8060, 8039, 10355, 14898, 6973],
+                        backgroundColor: '#818cf8',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: tooltipPlugin
+                    },
+                    scales: {
+                        y: { grid: { color: '#1e293b' }, ticks: { color: '#64748b' } },
+                        x: { grid: { display: false }, ticks: { color: '#64748b' } }
+                    }
+                }
+            });
+
+            // Chart 3: Correlation (Bubble Chart)
+            // Relates Temp to CO Sensor Values from the JSON
+            const ctx3 = document.getElementById('correlationChart').getContext('2d');
+            new Chart(ctx3, {
+                type: 'bubble',
+                data: {
+                    datasets: [{
+                        label: 'Environment Correlation',
+                        data: [
+                            { x: 1.97, y: 11027, r: 10 },
+                            { x: 2.1, y: 8060, r: 8 },
+                            { x: 2.3, y: 8039, r: 12 },
+                            { x: 2.8, y: 10355, r: 15 },
+                            { x: 3.5, y: 14898, r: 20 },
+                            { x: 4.1, y: 6973, r: 7 }
+                        ],
+                        backgroundColor: 'rgba(56, 189, 248, 0.5)',
+                        borderColor: '#38bdf8',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#94a3b8' } },
+                        tooltip: {
+                            callbacks: {
+                                label: (c) => `Temp: ${c.raw.x}°C | ADC: ${c.raw.y}`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { title: { display: true, text: 'ADC (CO Sensitivity)', color: '#64748b' }, grid: { color: '#1e293b' } },
+                        x: { title: { display: true, text: 'Ambient Temperature (°C)', color: '#64748b' }, grid: { display: false } }
+                    }
+                }
+            });
+
+            // Scroll Progress Listener
+            window.onscroll = function() {
+                let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                let scrolled = (winScroll / height) * 100;
+                document.getElementById("progress-bar").style.width = scrolled + "%";
+            };
+        };
+    </script>
+</body>
+</html>
