@@ -82,13 +82,6 @@
             box-shadow: 0 4px 20px -5px rgba(56, 189, 248, 0.15);
         }
 
-        /* AI Shimmer Effect */
-        .ai-shimmer {
-            background: linear-gradient(90deg, rgba(56, 189, 248, 0) 0%, rgba(56, 189, 248, 0.1) 50%, rgba(56, 189, 248, 0) 100%);
-            background-size: 200% 100%;
-            animation: shimmer 2s infinite;
-        }
-
         @keyframes shimmer {
             0% {
                 background-position: -200% 0;
@@ -149,7 +142,6 @@
                         class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
                 </span>
-                <span class="text-xs font-mono text-sky-400">AI SYSTEM ONLINE</span>
             </div>
         </div>
     </nav>
@@ -175,40 +167,6 @@
                         class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-indigo-400 to-sky-400 animate-pulse">Intervention</span>
                 </h1>
 
-                <!-- AI Smart Summary Block -->
-                <div class="max-w-3xl mx-auto mb-12">
-                    <div class="glass-panel rounded-2xl p-1">
-                        <div class="bg-slate-900/80 rounded-xl p-6 md:p-8 text-left relative">
-                            <div class="flex justify-between items-center mb-4">
-                                <h2
-                                    class="text-sm font-bold text-sky-400 uppercase tracking-wider flex items-center gap-2">
-                                    <span>📄</span> Abstract Source
-                                </h2>
-                                <button id="btn-generate-summary"
-                                    class="group flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-1.5 rounded-full text-xs font-bold transition-all shadow-lg shadow-indigo-500/20">
-                                    <span class="group-hover:animate-pulse">✨</span> Generate AI Summary
-                                </button>
-                            </div>
-
-                            <div id="abstract-content"
-                                class="text-slate-400 text-sm leading-relaxed border-l-2 border-slate-700 pl-4 mb-4">
-                                This report evaluates the critical gap in modern automotive safety protocols regarding
-                                stationary vehicle environments. While dynamic safety systems (ADAS) have reached
-                                maturity, the risks associated with cabin air quality—specifically Carbon Monoxide (CO)
-                                toxicity and Hyperthermia—remain largely unaddressed. This study analyses the Car-Bon
-                                Monox architecture: integrating industrial-grade cellular telemetry (SIM7600-QMI) with
-                                electrochemical sensing and electromechanical actuation (Remote Window Control) to
-                                reduce accidental fatalities.
-                            </div>
-
-                            <!-- Hidden AI Output Area -->
-                            <div id="ai-summary-container" class="hidden mt-4 pt-4 border-t border-slate-800">
-                                <p class="text-xs text-indigo-400 font-mono mb-2">GEMINI ANALYSIS:</p>
-                                <p id="ai-summary-text" class="text-white text-base font-medium leading-relaxed"></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- KPI Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
@@ -333,31 +291,6 @@
                         </p>
                     </div>
 
-                    <!-- AI Diagnostic Button -->
-                    <button id="btn-run-diagnostic"
-                        class="glass-panel px-6 py-3 rounded-lg flex items-center gap-3 hover:bg-slate-800 transition-colors group border-l-4 border-l-sky-500">
-                        <div class="flex flex-col text-left">
-                            <span class="text-[10px] text-sky-400 font-bold uppercase tracking-wider">Gemini
-                                Engine</span>
-                            <span class="text-sm font-bold text-white group-hover:text-sky-300 transition-colors">Run
-                                Safety Diagnostic</span>
-                        </div>
-                        <span class="text-xl">🩺</span>
-                    </button>
-                </div>
-
-                <!-- Diagnostic Output Area -->
-                <div id="diagnostic-result"
-                    class="hidden mb-12 p-6 rounded-xl bg-gradient-to-r from-sky-900/20 to-slate-900 border border-sky-500/30 relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-1 h-full bg-sky-500"></div>
-                    <div class="flex gap-4">
-                        <div class="text-2xl mt-1">🤖</div>
-                        <div>
-                            <h4 class="text-sky-400 font-bold text-sm uppercase mb-2">AI Assessment Report</h4>
-                            <p id="diagnostic-text" class="text-slate-200 text-sm leading-relaxed"></p>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Charts Grid -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -484,54 +417,6 @@
 
     </main>
 
-    <!-- Floating AI Chat Assistant -->
-    <div class="fixed bottom-6 right-6 z-50">
-        <!-- Chat Window -->
-        <div id="chat-window"
-            class="hidden w-80 md:w-96 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden flex flex-col transition-all origin-bottom-right transform scale-95 opacity-0">
-            <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                    <span class="text-lg">✨</span>
-                    <span class="font-bold text-white text-sm">Research Assistant</span>
-                </div>
-                <button id="btn-close-chat" class="text-slate-500 hover:text-white">&times;</button>
-            </div>
-
-            <div id="chat-history" class="h-80 overflow-y-auto p-4 space-y-3 bg-slate-950">
-                <div class="flex gap-3">
-                    <div
-                        class="w-8 h-8 rounded-full bg-sky-900/50 flex items-center justify-center text-xs text-sky-400 flex-shrink-0">
-                        AI</div>
-                    <div
-                        class="bg-slate-900 border border-slate-800 p-3 rounded-tr-xl rounded-b-xl text-xs text-slate-300">
-                        Hello. I have analyzed the Car-Bon Monox report. Ask me about hardware specs, CO thresholds, or
-                        safety logic.
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-3 bg-slate-900 border-t border-slate-800">
-                <div class="flex gap-2">
-                    <input type="text" id="chat-input" placeholder="Ask a question..."
-                        class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-sky-500 transition-colors">
-                    <button id="btn-send-chat"
-                        class="bg-sky-600 hover:bg-sky-500 text-white p-2 rounded-lg transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Toggle Button -->
-        <button id="btn-toggle-chat"
-            class="w-14 h-14 bg-sky-600 hover:bg-sky-500 rounded-full shadow-xl flex items-center justify-center text-2xl transition-transform hover:scale-110">
-            ✨
-        </button>
-    </div>
-
     <!-- Scripts -->
     <script>
         // --- 1. DATA PREPARATION (Based on provided JSON snippet & report) ---
@@ -560,40 +445,6 @@
             { t: '35s', v: 12000, temp: 5.2 },
             { t: '40s', v: 16500, temp: 6.0 }
         ];
-
-        // --- 2. GEMINI API INTEGRATION ---
-
-        const apiKey = ""; // Runtime Environment Key
-        const modelId = "gemini-2.5-flash-preview-09-2025";
-
-        async function callGemini(prompt, systemInstruction = "You are a senior automotive safety researcher and data analyst.") {
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelId}:generateContent?key=${apiKey}`;
-
-            const payload = {
-                contents: [{ parts: [{ text: prompt }] }],
-                systemInstruction: { parts: [{ text: systemInstruction }] }
-            };
-
-            let delay = 1000;
-            for (let i = 0; i < 3; i++) { // Retry logic
-                try {
-                    const response = await fetch(url, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) throw new Error(`API Error: ${response.status}`);
-
-                    const result = await response.json();
-                    return result.candidates?.[0]?.content?.parts?.[0]?.text || "Analysis unavailable.";
-                } catch (e) {
-                    if (i === 2) return "System Offline: Unable to connect to AI Research Engine.";
-                    await new Promise(r => setTimeout(r, delay));
-                    delay *= 2;
-                }
-            }
-        }
 
         // --- 3. CHART CONFIGURATION ---
 
@@ -699,121 +550,6 @@
             });
         });
 
-        // --- 4. INTERACTION LOGIC ---
-
-        // Feature: Smart Summary
-        const btnSummary = document.getElementById('btn-generate-summary');
-        const summaryContainer = document.getElementById('ai-summary-container');
-        const summaryText = document.getElementById('ai-summary-text');
-
-        btnSummary.addEventListener('click', async () => {
-            summaryContainer.classList.remove('hidden');
-            summaryText.innerHTML = `<span class="animate-pulse">Analyzing document structure...</span>`;
-            btnSummary.disabled = true;
-            btnSummary.classList.add('opacity-50');
-
-            const abstract = document.getElementById('abstract-content').innerText;
-            const prompt = `Summarize this technical abstract into 2 concise sentences for a non-technical executive, focusing on the problem and the solution: "${abstract}"`;
-
-            const result = await callGemini(prompt);
-            summaryText.innerText = result;
-            btnSummary.disabled = false;
-            btnSummary.classList.remove('opacity-50');
-        });
-
-        // Feature: AI Diagnostic
-        const btnDiagnostic = document.getElementById('btn-run-diagnostic');
-        const diagResult = document.getElementById('diagnostic-result');
-        const diagText = document.getElementById('diagnostic-text');
-
-        btnDiagnostic.addEventListener('click', async () => {
-            diagResult.classList.remove('hidden');
-            diagText.innerHTML = "Processing telemetry streams...";
-
-            // Construct context from actual chart data
-            const peakPPM = Math.max(...espData.map(d => d.v));
-            const peakADC = Math.max(...piData.map(d => d.v));
-
-            const prompt = `Analyze these sensor readings from the Car-Bon Monox device:
-        1. Peak Calibrated CO: ${peakPPM} PPM (Note: OSHA limit is 35 PPM).
-        2. Peak Raw ADC: ${peakADC} (16-bit sensor).
-        
-        Is this dangerous? What state should the device be in (Monitor, Alert, or Intervene)? Explain briefly to a Fleet Manager.`;
-
-            const result = await callGemini(prompt, "You are an industrial safety officer.");
-            diagText.innerText = result;
-        });
-
-        // Feature: Chat Assistant
-        const chatWindow = document.getElementById('chat-window');
-        const btnToggle = document.getElementById('btn-toggle-chat');
-        const btnClose = document.getElementById('btn-close-chat');
-        const chatInput = document.getElementById('chat-input');
-        const btnSend = document.getElementById('btn-send-chat');
-        const chatHistory = document.getElementById('chat-history');
-
-        // Toggle visibility
-        btnToggle.addEventListener('click', () => {
-            chatWindow.classList.toggle('hidden');
-            setTimeout(() => {
-                chatWindow.classList.toggle('opacity-0');
-                chatWindow.classList.toggle('scale-95');
-            }, 10);
-        });
-
-        btnClose.addEventListener('click', () => {
-            chatWindow.classList.add('opacity-0', 'scale-95');
-            setTimeout(() => chatWindow.classList.add('hidden'), 300);
-        });
-
-        // Chat Logic
-        const addMessage = (text, isUser) => {
-            const div = document.createElement('div');
-            div.className = "flex gap-3 " + (isUser ? "flex-row-reverse" : "");
-
-            const avatar = document.createElement('div');
-            avatar.className = `w-8 h-8 rounded-full flex items-center justify-center text-xs flex-shrink-0 ${isUser ? 'bg-indigo-600 text-white' : 'bg-sky-900/50 text-sky-400'}`;
-            avatar.innerText = isUser ? 'U' : 'AI';
-
-            const bubble = document.createElement('div');
-            bubble.className = `p-3 rounded-xl text-xs max-w-[80%] ${isUser ? 'bg-indigo-600 text-white rounded-tr-none' : 'bg-slate-900 border border-slate-800 text-slate-300 rounded-tl-none'}`;
-            bubble.innerText = text;
-
-            div.appendChild(avatar);
-            div.appendChild(bubble);
-            chatHistory.appendChild(div);
-            chatHistory.scrollTop = chatHistory.scrollHeight;
-        };
-
-        const handleSend = async () => {
-            const query = chatInput.value.trim();
-            if (!query) return;
-
-            addMessage(query, true);
-            chatInput.value = '';
-
-            // Add loading state
-            const loadingId = 'loading-' + Date.now();
-            const loadDiv = document.createElement('div');
-            loadDiv.id = loadingId;
-            loadDiv.className = "flex gap-3";
-            loadDiv.innerHTML = `<div class="w-8 h-8 rounded-full bg-sky-900/50 flex items-center justify-center text-xs text-sky-400">AI</div><div class="p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-500 text-xs italic">Consulting research...</div>`;
-            chatHistory.appendChild(loadDiv);
-            chatHistory.scrollTop = chatHistory.scrollHeight;
-
-            const prompt = `Context: Technical report for 'Car-Bon Monox' safety device. 
-        Specs: SIM7600-QMI (4G), MQ-7 Sensor, Window Actuation Relay. 
-        Goal: Prevent CO poisoning in stationary cars.
-        User Question: ${query}`;
-
-            const response = await callGemini(prompt);
-
-            document.getElementById(loadingId).remove();
-            addMessage(response, false);
-        };
-
-        btnSend.addEventListener('click', handleSend);
-        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSend(); });
 
     </script>
 </body>
